@@ -1,7 +1,11 @@
 package com.lequtera.bms.webview;
 
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -10,11 +14,33 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private WebView webView;
+    private FloatingActionButton fab;
+    private SwipeRefreshLayout swipeRefreshLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.webViewSwipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+             loadURL();
+            }
+        });
+        loadURL();
+
+        fab = (FloatingActionButton)findViewById(R.id.floating_button);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,BoothListActivity.class));
+            }
+        });
+    }
+
+    private void loadURL() {
         webView = (WebView)findViewById(R.id.webview);
+        swipeRefreshLayout.setRefreshing(true);
         webView.setWebViewClient(new WebViewClient(){
             private String address = "https://electoralsearch.in/##resultArea";
 //            @Override
@@ -53,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         webView.loadUrl("https://electoralsearch.in/");
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
