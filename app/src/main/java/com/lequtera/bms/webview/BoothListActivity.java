@@ -16,7 +16,7 @@ import org.w3c.dom.Text;
 
 public class BoothListActivity extends AppCompatActivity {
     private String[] boothNames = {"Booth1", "Booth2", "Booth3", "Booth4", "Booth5", "Booth6", "Booth7", "Booth8", "Booth9", "Booth10", "Booth11"};
-    private String[] boothCoordingate = {"geo:19.076,72.8777","geo:19.076,72.8777","geo:19.076,72.8777","geo:19.076,72.8777","geo:19.076,72.8777","geo:19.076,72.8777","geo:19.076,72.8777","geo:19.076,72.8777","geo:19.076,72.8777","geo:19.076,72.8777","geo:19.076,72.8777"};
+    private String[] boothCoordinates = {"geo:19.076,72.8777?z=21","geo:19.076,72.8777","geo:19.076,72.8777","geo:19.076,72.8777","geo:19.076,72.8777","geo:19.076,72.8777","geo:19.076,72.8777","geo:19.076,72.8777","geo:19.076,72.8777","geo:19.076,72.8777","geo:19.076,72.8777"};
     private int[] boothImages={R.drawable.booth,R.drawable.booth,R.drawable.booth,R.drawable.booth,R.drawable.booth,R.drawable.booth,R.drawable.booth,R.drawable.booth,R.drawable.booth,R.drawable.booth,R.drawable.booth};
     private ListView listView;
     @Override
@@ -30,7 +30,11 @@ public class BoothListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             CustomDialogue customDialogue = new CustomDialogue();
-            customDialogue.show(getSupportFragmentManager(),"Custom Dialogue");
+            Bundle bundle = new Bundle();
+            bundle.putString("Name",boothNames[position]);
+            bundle.putString("Location",boothCoordinates[position]);
+            customDialogue.setArguments(bundle);
+            customDialogue.show((BoothListActivity.this).getSupportFragmentManager(),"Custom Dialogue");
 
             }
         });
